@@ -19,14 +19,15 @@ uint64_t Vehicle::assignClosestPossibleRide (std::forward_list<Ride>& freeRides)
 			}
 }
 
-bool Vehicle::canFulfil (const Ride& ride) {
-	return location.distanceTo(ride.start) <= ride.timeStart - timeOfEarliestAvailability;
+bool Vehicle::canFulfil (const Ride& ride) const {
+	return location.distanceTo(ride.start) <= ride.timeFinish - ride.length();
 }
 
 void Vehicle::assign (const Ride& ride) {
+	short distance = location.distanceTo(ride.start);
+	timeOfEarliestAvailability =  (timeOfEarliestAvailability + distance > ride.timeStart ? timeOfEarliestAvailability + distance : ride.timeStart) + ride.length();
 	location = ride.finish;
-	timeOfEarliestAvailability = ride.timeStart + ride.length();
-	assignedRides.push_front(ride);
+	assignedRides.push_back(ride);
 	++numberOfAssignedRides;
 }
 
@@ -36,4 +37,14 @@ void Vehicle::print () const {
 		std::cout << ride.id << ' ';
 
 	std::cout << std::endl;
+}
+
+double Vehicle::fulfilmentCost (const Ride& ride) {
+	//TODO: optimize for bonus
+	if (!canFulfil(ride))
+		return -1;
+
+	short distance = location.distanceTo(ride.start);
+
+	return (double)(ride.length()) / (ride.length() + (timeOfEarliestAvailability + distance > ride.timeStart ? distance : ride.timeStart));
 }

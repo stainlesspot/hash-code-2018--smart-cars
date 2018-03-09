@@ -9,6 +9,11 @@ bool Ride::operator< (const Ride& rhs) const {
 	return timeStart < rhs.timeStart;
 }
 
+void Ride::print () const {
+	std::cout << "[" << id << "] " <<  '(' << start.x << ", " << start.y << ") (" << finish.x << ", " << finish.y << ") "
+	          << timeStart << ' ' << timeFinish << " length: " << length() << " timePeriod: " << timeFinish - timeStart << std::endl;
+}
+
 Ride::Ride(const short& id, std::istream& in)
 		: id(id) {
 	in >> start.x >> start.y >> finish.x >> finish.y >> timeStart
