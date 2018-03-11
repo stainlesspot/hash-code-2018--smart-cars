@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../headers/Ride.h"
 
+short Ride::bonus = 0;
 
 bool Ride::operator< (const Ride& rhs) const {
 	if (timeStart == rhs.timeStart)

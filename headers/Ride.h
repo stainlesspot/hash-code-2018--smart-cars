@@ -17,6 +17,8 @@ private:
 	uint64_t timeFinish;
 
 public:
+	static short bonus;
+
 	void print () const;
 
 	bool operator< (const Ride& rhs) const;

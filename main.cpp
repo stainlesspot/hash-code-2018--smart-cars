@@ -12,7 +12,7 @@ void giveOrders (std::vector<Vehicle>& vehicles, std::list<Ride>& freeRides) {
 		stillMoving = false;
 
 		for (auto &vehicle : vehicles) {
-			double bestScore = 0;
+			double bestScore = -1000;
 
 			auto bestRide = freeRides.begin();
 
@@ -27,7 +27,7 @@ void giveOrders (std::vector<Vehicle>& vehicles, std::list<Ride>& freeRides) {
 					stillMoving = true;
 				}
 			}
-			if (bestRide != freeRides.end()) {
+			if (bestScore != -1000 &&   bestRide != freeRides.end()) {
 				vehicle.assign(*bestRide);
 				freeRides.erase(bestRide);
 			}
@@ -41,13 +41,13 @@ int main() {
 	short columns;          // between 1 and 10 000
 	short numberOfVehicles; // between 1 and 1 000
 	short numberOfRides;    // between 1 and 10 000
-	short bonus;            // between 1 and 10 000
+//	short bonus;            // between 1 and 10 000
 	uint64_t numberOfSteps; // between 1 and 1 000 000 000
 
 	//std::ifstream reader("input/a_example.in");
 
 
-	std::cin >> rows >> columns >> numberOfVehicles >>  numberOfRides >> bonus >> numberOfSteps;
+	std::cin >> rows >> columns >> numberOfVehicles >>  numberOfRides >> Ride::bonus >> numberOfSteps;
 
 	std::list<Ride> freeRides;
 

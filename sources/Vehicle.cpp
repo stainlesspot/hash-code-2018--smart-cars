@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "../headers/Vehicle.h"
 
 uint64_t Vehicle::assignClosestPossibleRide (std::forward_list<Ride>& freeRides) {
@@ -40,11 +41,21 @@ void Vehicle::print () const {
 }
 
 double Vehicle::fulfilmentCost (const Ride& ride) {
-	//TODO: optimize for bonus
 	if (!canFulfil(ride))
 		return -1;
 
 	short distance = location.distanceTo(ride.start);
 
-	return (double)(ride.length()) / (ride.length() + (timeOfEarliestAvailability + distance > ride.timeStart ? distance : ride.timeStart));
+	uint64_t timeBeginRide;
+	short bonusPoints;
+
+	if (timeOfEarliestAvailability + distance > ride.timeStart) {
+		timeBeginRide = distance + timeOfEarliestAvailability;
+		bonusPoints = 0;
+	}
+	else {
+		timeBeginRide = ride.timeStart;
+		bonusPoints = Ride::bonus;
+	}
+	return (double)(ride.length() + bonusPoints) / std::pow(ride.length() + timeBeginRide, 2);
 }
